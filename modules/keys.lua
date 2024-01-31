@@ -37,6 +37,35 @@ globalkeys = gears.table.join(
     --* ROFI
     awful.key({mod}, "r", function() awful.util.spawn("rofi -show drun") end, {description = "launch Rofi", group = "launcher"}),
 
+    --* INCREASE BRIGHTNESS
+    awful.key({}, "XF86MonBrightnessUp", function ()
+            awful.spawn.easy_async_with_shell("brightnessctl set 3%+ > /dev/null", function(stdout)
+                awesome.emit_signal("popup::brightness", {amount = 3})
+            end)
+        end,
+        {description = "increase brightness", group = "media"}
+    ),
+    --* DECREASE BRIGHTNESS
+    awful.key({}, "XF86MonBrightnessDown", function ()
+        awful.spawn.easy_async_with_shell("brightnessctl info", function(stdout)
+            local value = tonumber(string.match(string.match(stdout, "%d+%%"), "%d+"))
+
+            local decrease = 3
+
+            if value == 3 then
+               decrease = 2
+            elseif value == 2 then
+               decrease = 1
+            elseif value < 2 then
+               decrease = 0
+            end
+
+            awful.spawn.easy_async_with_shell("brightnessctl set "..decrease.."%- > /dev/null", function(stdout)
+               awesome.emit_signal("popup::brightness", {amount = -decrease})
+            end)
+         end)
+        end
+    ),
 
     --* WORKSPACES
     awful.key({ mod,}, "Left",   awful.tag.viewprev, {description = "view previous", group = "tag"}),

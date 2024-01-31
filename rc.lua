@@ -164,3 +164,4 @@ awful.screen.connect_for_each_screen(function(s)
 end)
 -- }}}
 
+awful.spawn.with_shell("xrandr --output Virtual-1 --mode 1920x1080")

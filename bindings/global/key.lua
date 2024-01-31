@@ -57,7 +57,7 @@ awful.keyboard.append_global_keybindings{
     },
     awful.key{  --* CODIUM
         modifiers = {mod.super},
-        key = 'e',
+        key = 'v',
         description = 'run codium',
         group = 'Apps',
         on_press = function() awful.util.spawn('codium') end,
@@ -202,10 +202,10 @@ awful.keyboard.append_global_keybindings{
     },
  }
  
- --* focus related keybindings
+ 
+--* focus related keybindings
 awful.keyboard.append_global_keybindings{
-    --[[ 
-    awful.key{
+--[[    awful.key{
         modifiers = {mod.alt},
         key = 'Tab',
         description = 'open app switcher forward',
@@ -222,11 +222,10 @@ awful.keyboard.append_global_keybindings{
         on_press = function() 
             apps.switcher.switch(-1, "Mod1", "Alt_L", "Shift", "Tab") 
         end,
-    },
-    ]]
+    }, ]]
    awful.key{
       modifiers = {mod.super},
-      key = 'Tab',
+      key = 'space',
       description = 'go back',
       group = 'client',
       on_press = function()
@@ -255,4 +254,93 @@ awful.keyboard.append_global_keybindings{
          end
       end,
    },
+}
+
+
+--* layout related keys
+awful.keyboard.append_global_keybindings{
+    awful.key{
+        modifiers = {mod.super},
+        key = 'Tab',
+        description = 'select next',
+        group = 'layout',
+        on_press = function() awful.layout.inc(1) end,
+    },
+    awful.key{
+        modifiers = {mod.super, mod.shift},
+        key = 'space',
+        description = 'select previous',
+        group = 'layout',
+        on_press = function() awful.layout.inc(-1) end,
+    }
+}
+
+--* workspace
+awful.keyboard.append_global_keybindings{
+    awful.key{
+        modifiers = {mod.super},
+        keygroup    = 'numrow',
+        description = 'only view tag',
+        group = 'tag',
+        on_press = function(index)
+           local screen = awful.screen.focused()
+           local tag = screen.tags[index]
+           if tag then
+              tag:view_only(tag)
+           end
+        end
+     },
+    awful.key{
+       modifiers = {mod.super, mod.ctrl},
+       keygroup    = 'numrow',
+       description = 'toggle tag',
+       group = 'tag',
+       on_press = function(index)
+          local screen = awful.screen.focused()
+          local tag = screen.tags[index]
+          if tag then
+             tag:viewtoggle(tag)
+          end
+       end
+    },
+    awful.key{
+       modifiers = {mod.super, mod.shift},
+       keygroup    = 'numrow',
+       description = 'move focused client to tag',
+       group = 'tag',
+       on_press = function(index)
+          if client.focus then
+             local tag = client.focus.screen.tags[index]
+             if tag then
+                client.focus:move_to_tag(tag)
+             end
+          end
+       end
+    },
+    awful.key {
+       modifiers = {mod.super, mod.ctrl, mod.shift},
+       keygroup    = 'numrow',
+       description = 'toggle focused client on tag',
+       group = 'tag',
+       on_press = function(index)
+          if client.focus then
+             local tag = client.focus.screen.tags[index]
+             if tag then
+                client.focus:toggle_tag(tag)
+             end
+          end
+       end,
+    },
+    awful.key{
+       modifiers = {mod.super},
+       keygroup    = 'numpad',
+       description = 'select layout directrly',
+       group = 'layout',
+       on_press = function(index)
+          local tag = awful.screen.focused().selected_tag
+          if tag then
+             tag.layout = tag.layouts[index] or tag.layout
+          end
+       end
+    },
 }

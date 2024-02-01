@@ -6,9 +6,9 @@ client.connect_signal('request::default_keybindings', function()
     awful.keyboard.append_client_keybindings{
         awful.key{
             modifiers = {mod.super},
-            key = 'e'
+            key = 'e',
             description = 'toggle fullscreen',
-            group = 'client'
+            group = 'client',
             on_press = function(c)
                 c.fullscreen = not c.fullscreen
                 c:raise()

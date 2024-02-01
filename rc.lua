@@ -14,14 +14,14 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 
 require("modules/error_handler")
 require("modules/layouts")
-require("modules/keys")
+--require("modules/keys")
 require("modules/menu")
 require("modules/rules")
 require("modules/signals")
 
 -----------------------------------------------------*
 --* init configs
---require("bindings")
+require("bindings")
 -----------------------------------------------------*
 
 -- {{{ Variable definitions

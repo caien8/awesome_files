@@ -2,7 +2,7 @@ local awful = require('awful')
 local hotkeys_popup = require('awful.hotkeys_popup')
 require('awful.hotkeys_popup.keys')
 
-local apps = require('config.apps')
+--local apps = require('config.apps')
 local mod = require('bindings.mod')
 
 terminal = "kitty"

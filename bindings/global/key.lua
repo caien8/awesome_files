@@ -2,10 +2,8 @@ local awful = require('awful')
 local hotkeys_popup = require('awful.hotkeys_popup')
 require('awful.hotkeys_popup.keys')
 
---local apps = require('config.apps')
+local apps = require('config.apps')
 local mod = require('bindings.mod')
-
-terminal = "kitty"
 
 --* general keys
 awful.keyboard.append_global_keybindings{
@@ -21,7 +19,7 @@ awful.keyboard.append_global_keybindings{
         key = 'Return',
         description = 'launch terminal',
         group = 'Awesome',
-        on_press = function() awful.spawn(terminal) end,
+        on_press = function() awful.spawn(apps.terminal) end,
         --[[
         on_press = function () awful.spawn(user.floating_terminal, {
             floating = true, 
@@ -46,21 +44,21 @@ awful.keyboard.append_global_keybindings{
         key = 'w',
         description = 'run brave',
         group = 'Apps',
-        on_press = function() awful.util.spawn('brave') end,
+        on_press = function() awful.util.spawn(apps.browser) end,
     },
     awful.key{  --* THUNAR
         modifiers = {mod.super},
         key = 'f',
         description = 'run Thunar',
         group = 'Apps',
-        on_press = function() awful.util.spawn('thunar') end,
+        on_press = function() awful.util.spawn(apps.file_explorer) end,
     },
     awful.key{  --* CODIUM
         modifiers = {mod.super},
         key = 'v',
         description = 'run codium',
         group = 'Apps',
-        on_press = function() awful.util.spawn('codium') end,
+        on_press = function() awful.util.spawn(apps.editor) end,
     }, 
     awful.key{  --* RELOAD AWESOME
         modifiers = {mod.super, mod.ctrl},
@@ -77,7 +75,7 @@ awful.keyboard.append_global_keybindings{
         on_press = awesome.quit,
      },
     awful.key{  --* MAIN MENU
-        modifiers = {mod.super},
+        modifiers = {mod.super, mod.ctrl},
         key = 'w',
         description = 'show main menu',
         group = 'Awesome',
@@ -133,10 +131,17 @@ awful.keyboard.append_global_keybindings{
         description = "mute", 
         group = "Media",
         on_press = function ()
+            awful.spawn.easy_async_with_shell("pactl set-sink-mute 0 toggle", function(stdout)
+              awesome.emit_signal("popup::mute")
+            end)
+         end   
+        --[[
+        on_press = function ()
             awful.spawn.easy_async_with_shell("pamixer -t", function(stdout)
                 awesome.emit_signal("popup::volume")
             end)
         end
+        ]]
     },
     awful.key {  --* LOWER BRIGHTNESS
          modifiers = {},
@@ -223,7 +228,7 @@ awful.keyboard.append_global_keybindings{
             apps.switcher.switch(-1, "Mod1", "Alt_L", "Shift", "Tab") 
         end,
     }, ]]
-   awful.key{
+   awful.key{ --* SWITCH WINDOW FOCUS
       modifiers = {mod.super},
       key = 'space',
       description = 'go back',
@@ -235,14 +240,14 @@ awful.keyboard.append_global_keybindings{
          end
       end,
    },
-   awful.key{
+   awful.key{  --* SWITCH SCREEN FOCUS
       modifiers = {mod.super, mod.ctrl},
       key = 'j',
       description = 'focus the next screen',
       group = 'screen',
       on_press = function() awful.screen.focus_relative(1) end,
    },
-   awful.key{
+   awful.key{   --* RESTORE MINIMIZED
       modifiers = {mod.super, mod.ctrl},
       key = 'n',
       description = 'restore minimized',
@@ -259,7 +264,7 @@ awful.keyboard.append_global_keybindings{
 
 --* layout related keys
 awful.keyboard.append_global_keybindings{
-    awful.key{
+    awful.key{  --* SWITCH LAYOUT
         modifiers = {mod.super},
         key = 'Tab',
         description = 'select next',

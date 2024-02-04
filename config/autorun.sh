@@ -9,3 +9,4 @@ function run {
 
 run picom -b
 run nm-applet --no-agent
+run udiskie

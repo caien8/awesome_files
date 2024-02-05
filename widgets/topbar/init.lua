@@ -3,8 +3,9 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 
-local clock = require("widgets.topbar.components.clock")
+local clock    = require("widgets.topbar.components.clock")
 local tag_list = require("widgets.topbar.components.taglist")
+local battery  = require("widgets.topbar.components.battery")
 
 awful.screen.connect_for_each_screen(function(s)
     --* Create the topbar
@@ -25,6 +26,7 @@ awful.screen.connect_for_each_screen(function(s)
         },
         {
             layout = wibox.layout.fixed.horizontal,
+            battery,
             clock
         }
     }

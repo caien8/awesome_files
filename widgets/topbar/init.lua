@@ -12,7 +12,7 @@ awful.screen.connect_for_each_screen(function(s)
     --* Create the topbar
     s.topbar = awful.wibar{ position = "top", 
                             screen = s,
-                            height = 30,
+                            height = 20,
                             bg = "#0000000",
                             }
     --* Adding widgets                            

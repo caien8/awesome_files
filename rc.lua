@@ -12,11 +12,14 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 require("modules/menu")
 require("modules/rules")
 require("modules/signals")
-require("widgets.topbar")
+
 -----------------------------------------------------*
 --* init configs
 require("bindings")
 require("config")
+
+require("widgets.topbar")
+require("widgets.popup")
 -----------------------------------------------------*
 
 beautiful.init(awful.util.getdir("config") .. "themes/theme.lua")

@@ -27,24 +27,45 @@ end
 
 --* Function to get the battery icon
 local function get_battery_icon(status, capacity)
-    if status == "Charging" then
-        icon = ""
+    if (string.match(status,"Charging")) and (capacity > 90) then
+        icon = "󰂄"
         color = "#00ff00"
-    elseif capacity >= 80 then
-        icon = ""
-        color = "#00ff00"
-    elseif capacity >= 60 then
-        icon = ""
-        color = "#ffff00"
-    elseif capacity >= 40 then
-        icon = ""
-        color = "#ffa500"
-    elseif capacity >= 20 then
-        icon = ""
-        color = "#ff4500"
-    else
-        icon = ""
+    elseif (string.match(status, "Charging")) and (capacity <= 90) then
+        icon = "󰂄"
+        color = "#ffffff"
+    elseif (string.match(status, "Discharging")) and (capacity <= 15) then
+        icon = "󰂅"
         color = "#ff0000"
+    elseif (string.match(status, "Discharging")) and (capacity <= 20) then  -- 0 - 20
+        icon = "󰁻"
+        color = "#ff4500"
+    elseif (string.match(status, "Discharging")) and (capacity <= 30) then  -- 21 - 30
+        icon = "󰁼"
+        color = "#ff7f00"
+    elseif (string.match(status, "Discharging")) and (capacity <= 40) then  -- 31 - 40
+        icon = "󰁽"
+        color = "#ffbf00"
+    elseif (string.match(status, "Discharging")) and (capacity <= 50) then  -- 41 - 50
+        icon = "󰁾"
+        color = "#ffffff"
+    elseif (string.match(status, "Discharging")) and (capacity <= 60) then  -- 51 - 60
+        icon = "󰁿"
+        color = "#ffffff"
+    elseif (string.match(status, "Discharging")) and (capacity <= 70) then  -- 61 - 70
+        icon = "󰂀"
+        color = "#ffffff"
+    elseif (string.match(status, "Discharging")) and (capacity <= 80) then  -- 71 - 80
+        icon = "󰂁"
+        color = "#ffffff"
+    elseif (string.match(status, "Discharging")) and (capacity <= 90) then  -- 81 - 90
+        icon = "󰂂"
+        color = "#ffffff"
+    elseif (string.match(status, "Discharging")) and (capacity < 100) then  -- 91 - 99
+        icon = "󰁹"
+        color = "#00ff00"
+    else                                                         -- 100
+        icon = "󰁹"
+        color = "#00ff00"
     end
     return icon, color
 end
@@ -52,7 +73,7 @@ end
 --* Create battery icon widget
 local battery_icon_widget = wibox.widget {
     widget = wibox.widget.textbox,
-    font = "Roboto Medium 20"
+    font = "Roboto Medium 12"
 }
 
 --* Create battery capacity widget
@@ -72,8 +93,25 @@ end
 --* Function to update battery capacity widget
 local function update_battery_capacity_widget()
     local capacity = get_battery_percentage()
-    battery_capacity_widget.markup = '<span>' .. capacity .. '%</span>'
+    battery_capacity_widget.markup = '<span>' .. capacity .. '%</span>  '
 end
+
+--* Function to get the battery duration (remaining time)
+local function get_battery_duration()
+    local handle = io.popen("acpi -b")
+    if handle then
+        local result = handle:read("*a")
+        handle:close()
+        
+        -- Extract the remaining time from the acpi output
+        local time_remaining = result:match("([%d]+:[%d]+:[%d]+)")
+        if time_remaining then
+            return time_remaining
+        end
+    end
+    return "N/A"
+end
+
 
 --* Update battery widgets initially
 update_battery_icon_widget()
@@ -93,5 +131,24 @@ local battery_widget = wibox.widget {
     battery_icon_widget,
     battery_capacity_widget
 }
+
+--* Create a tooltip for the battery_widget
+local battery_tooltip = awful.tooltip({
+    objects = { battery_widget },
+    fg = "#ffffff",
+    bg = "#0000000",
+    opacity = 0.5,
+    font = "Roboto Medium 10",
+    timer_function = function()
+        -- Call the function that gets the battery duration
+        local duration = get_battery_duration()
+        local status = get_battery_status()
+        if string.match(status, "Charging") then
+            return "Charging duration: " .. duration
+        end
+        return "Battery duration: " .. duration
+    end,
+})
+
 
 return battery_widget

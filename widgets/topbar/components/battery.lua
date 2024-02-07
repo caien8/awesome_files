@@ -93,7 +93,7 @@ end
 --* Function to update battery capacity widget
 local function update_battery_capacity_widget()
     local capacity = get_battery_percentage()
-    battery_capacity_widget.markup = '<span>' .. capacity .. '%</span>  '
+    battery_capacity_widget.markup = '<span>' .. capacity .. '%</span>'
 end
 
 --* Function to get the battery duration (remaining time)
@@ -137,8 +137,7 @@ local battery_tooltip = awful.tooltip({
     objects = { battery_widget },
     fg = "#ffffff",
     bg = "#0000000",
-    opacity = 0.5,
-    font = "Roboto Medium 10",
+    font = "Roboto Bold 10",
     timer_function = function()
         -- Call the function that gets the battery duration
         local duration = get_battery_duration()

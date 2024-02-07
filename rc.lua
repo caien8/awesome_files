@@ -3,11 +3,10 @@ pcall(require, "luarocks.loader")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
-local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local menubar = require("menubar")
-local hotkeys_popup = require("awful.hotkeys_popup")
+
+awful.spawn.with_shell("~/.config/awesome/config/autorun.sh")
 
 require("modules/menu")
 require("modules/rules")

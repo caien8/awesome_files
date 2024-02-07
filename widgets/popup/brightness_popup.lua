@@ -58,9 +58,11 @@ local brightness_text = wibox.widget {
 
 -- Create an image widget to display the brightness icon
 local brightness_icon = wibox.widget {
-    image = "/home/caien/.config/awesome/widgets/popup/lamp.png", -- Replace with the path to your brightness icon
-    resize = true,
-    widget = wibox.widget.imagebox
+    text = "🌣", -- Set the desired text here
+    align = "center",
+    valign = "center",
+    font = "Roboto Medium 14",
+    widget = wibox.widget.textbox
 }
 
 -- Set the progress bar and additional widgets as the children of the floating wibox

@@ -37,7 +37,7 @@ awful.keyboard.append_global_keybindings{
         key = 'd',
         description = 'run dmenu',
         group = 'Launcher',
-        on_press = function() awful.util.spawn('dmenu_run') end,
+        on_press = function() awful.util.spawn('dmenu_run -l 10') end,
     },
     awful.key{  --* BRAVE
         modifiers = {mod.super},
@@ -114,6 +114,7 @@ awful.keyboard.append_global_keybindings{
             end)
         end
     },  
+    --[[
     awful.key {  --* RAISE VOLUME
         modifiers = {},
         key = "XF86AudioRaiseVolume",
@@ -125,6 +126,27 @@ awful.keyboard.append_global_keybindings{
             end)
         end
     },
+    ]]
+    awful.key {  --* RAISE VOLUME
+         modifiers = {},
+         key = "XF86AudioRaiseVolume",
+         description = "raise volume", 
+         group = "Media",
+         on_press = function ()
+             -- Get the current volume level
+             awful.spawn.easy_async_with_shell("pactl get-sink-volume @DEFAULT_SINK@", function(stdout)
+                 local current_volume = tonumber(string.match(stdout, "(%d+)%%")) -- Extract the volume percentage
+                 if current_volume and current_volume < 100 then -- Check if volume is below 100%
+                     local increase_amount = 3 -- Define the increase amount
+                     local new_volume = math.min(current_volume + increase_amount, 100) -- Calculate the new volume, not exceeding 100%
+                     -- Set the new volume
+                     awful.spawn.easy_async_with_shell("pactl set-sink-volume @DEFAULT_SINK@ " .. new_volume .. "%", function()
+                         awesome.emit_signal("popup::volume", {amount = new_volume - current_volume})
+                     end)
+                 end
+             end)
+         end
+   },
     awful.key {  --* MUTE VOLUME
         modifiers = {},
         key = "XF86AudioMute",
@@ -142,6 +164,19 @@ awful.keyboard.append_global_keybindings{
             end)
         end
         ]]
+    },
+    awful.key {  --* MUTE/UNMUTE MICROPHONE
+        modifiers = {mod.super},
+        key = "XF86AudioMute",
+        description = "mute/unmute microphone", 
+        group = "Media",
+        on_press = function ()
+            -- Toggle microphone mute state using pactl
+            awful.spawn.easy_async_with_shell("pactl set-source-mute @DEFAULT_SOURCE@ toggle", function()
+                -- Emit signal to update microphone widget
+                awesome.emit_signal("popup::microphone")
+            end)
+        end
     },
     awful.key {  --* LOWER BRIGHTNESS
          modifiers = {},

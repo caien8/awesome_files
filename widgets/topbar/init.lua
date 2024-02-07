@@ -6,7 +6,11 @@ local beautiful = require("beautiful")
 local clock    = require("widgets.topbar.components.clock")
 local tag_list = require("widgets.topbar.components.taglist")
 local battery  = require("widgets.topbar.components.battery")
-local sep = require("widgets.topbar.components.separator")
+local network  = require("widgets.topbar.components.network")
+local volume   = require("widgets.topbar.components.volume")
+local microphone = require("widgets.topbar.components.microphone")
+local sep      = require("widgets.topbar.components.separator")
+
 
 awful.screen.connect_for_each_screen(function(s)
     --* Create the topbar
@@ -27,7 +31,14 @@ awful.screen.connect_for_each_screen(function(s)
         },
         {
             layout = wibox.layout.fixed.horizontal,
+            network,
+            sep,
+            volume,
+            sep,
+            microphone,
+            sep,
             battery,
+            sep,
             clock
         }
     }

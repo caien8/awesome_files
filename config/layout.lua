@@ -1,6 +1,5 @@
 local awful = require("awful")
 local gears = require("gears")
-local beautiful = require("beautiful")
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {

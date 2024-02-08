@@ -14,12 +14,30 @@ theme.wallpaper = themes_path.."wallpaper.jpg"
 --theme.wallpaper_blur = themes_path.."wallpaper_blur.png"
 
 --* FONTS
-theme.font          = "Roboto Medium 9"
-theme.titlefont          = "Roboto Bold 9"
-theme.fontname          = "Roboto Medium 9"
-theme.glyph_font = "JetBrains Mono"
+theme.font          = "Roboto Medium "
+theme.titlefont          = "Roboto Bold "
+theme.icon_font = "JetBrains Mono "
+
+theme.fg = "#a9b1d6"
+theme.fg_focus = "#c0caf5"
+theme.fg_urgent = "#f7768e"
+theme.fg_dark = "#cccccc"
+
+theme.bg = "#1a1b26"
+theme.bg_focus = "#414868"
+theme.bg_urgent = "#565f89"
+theme.bg_light = "#9699a3"
+
+theme.transparent = "#0000000"
+
+theme.green = "#9ece6a"
+theme.green_light = "#73daca"
+theme.red = "#f7768e"
+theme.orange = "#ff9e64"
+theme.yellow = "#e0af68"
 
 --* COLOR SCHEME
+--[[
 theme.bg_normal     = "#1C1E26"
 theme.bg_focus      = theme.bg_normal
 theme.bg_urgent     = theme.bg_normal
@@ -40,7 +58,8 @@ theme.highlight_alt = "#B877DB"
 
 theme.misc1 = "#6C6F93"
 theme.misc2 = "#2f3240"
-theme.transparent = "'#282A3600"
+theme.transparent = "#0000000"
+]]
 
 --* terminal colors
 theme.blue = "#26BBD9"

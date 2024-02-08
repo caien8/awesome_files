@@ -1,5 +1,7 @@
 local awful = require("awful")
 local wibox = require("wibox")
+local beautiful = require("themes.theme")
+
 local battery_path = "/sys/class/power_supply/BATT/"
 local update_interval = 1
 
@@ -29,57 +31,58 @@ end
 local function get_battery_icon(status, capacity)
     if (string.match(status,"Charging")) and (capacity > 90) then
         icon = "󰂄"
-        color = "#00ff00"
+        color = beautiful.green
     elseif (string.match(status, "Charging")) and (capacity <= 90) then
         icon = "󰂄"
         color = "#ffffff"
     elseif (string.match(status, "Discharging")) and (capacity <= 15) then
         icon = "󰂅"
-        color = "#ff0000"
-    elseif (string.match(status, "Discharging")) and (capacity <= 20) then  -- 0 - 20
+        color = beautiful.red
+    elseif (string.match(status, "Discharging")) and (capacity <= 20) then  -- 16 - 20
         icon = "󰁻"
-        color = "#ff4500"
+        color = beautiful.orange
     elseif (string.match(status, "Discharging")) and (capacity <= 30) then  -- 21 - 30
         icon = "󰁼"
-        color = "#ff7f00"
+        color = beautiful.yellow
     elseif (string.match(status, "Discharging")) and (capacity <= 40) then  -- 31 - 40
         icon = "󰁽"
-        color = "#ffbf00"
+        color = beautiful.fg_focus
     elseif (string.match(status, "Discharging")) and (capacity <= 50) then  -- 41 - 50
         icon = "󰁾"
-        color = "#ffffff"
+        color = beautiful.fg_focus
     elseif (string.match(status, "Discharging")) and (capacity <= 60) then  -- 51 - 60
         icon = "󰁿"
-        color = "#ffffff"
+        color = beautiful.fg_focus
     elseif (string.match(status, "Discharging")) and (capacity <= 70) then  -- 61 - 70
         icon = "󰂀"
-        color = "#ffffff"
+        color = beautiful.fg_focus
     elseif (string.match(status, "Discharging")) and (capacity <= 80) then  -- 71 - 80
         icon = "󰂁"
-        color = "#ffffff"
+        color = beautiful.fg_focus
     elseif (string.match(status, "Discharging")) and (capacity <= 90) then  -- 81 - 90
         icon = "󰂂"
-        color = "#ffffff"
+        color = beautiful.fg_focus
     elseif (string.match(status, "Discharging")) and (capacity < 100) then  -- 91 - 99
         icon = "󰁹"
-        color = "#00ff00"
+        color = beautiful.green_light
     else                                                         -- 100
         icon = "󰁹"
-        color = "#00ff00"
+        color = beautiful.green
     end
     return icon, color
 end
 
+
 --* Create battery icon widget
 local battery_icon_widget = wibox.widget {
     widget = wibox.widget.textbox,
-    font = "Roboto Medium 12"
+    font = beautiful.icon_font .. "12"
 }
 
 --* Create battery capacity widget
 local battery_capacity_widget = wibox.widget {
     widget = wibox.widget.textbox,
-    font = "Roboto Medium 10"
+    font = beautiful.font .. "10"
 }
 
 --* Function to update battery icon widget
@@ -93,7 +96,8 @@ end
 --* Function to update battery capacity widget
 local function update_battery_capacity_widget()
     local capacity = get_battery_percentage()
-    battery_capacity_widget.markup = '<span>' .. capacity .. '%</span>'
+    local capacity_color = beautiful.fg_focus
+    battery_capacity_widget.markup = '<span color = "' ..capacity_color.. '" >' .. capacity .. '%</span>'
 end
 
 --* Function to get the battery duration (remaining time)
@@ -135,8 +139,8 @@ local battery_widget = wibox.widget {
 --* Create a tooltip for the battery_widget
 local battery_tooltip = awful.tooltip({
     objects = { battery_widget },
-    fg = "#ffffff",
-    bg = "#0000000",
+    fg = beautiful.fg,
+    bg = beautiful.transparent,
     font = "Roboto Bold 10",
     timer_function = function()
         -- Call the function that gets the battery duration

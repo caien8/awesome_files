@@ -2,6 +2,7 @@
 local wibox = require("wibox")
 local awful = require("awful")
 local gears = require("gears")
+local beautiful = require("themes.theme")
 local interface = "wlan0"
 local interval = 1
 
@@ -9,9 +10,9 @@ local interval = 1
 local network_speed_widget = wibox.widget {
         -- Network icon
     {
-  id = "icon",
-  text = "󰤨", -- Default icon for disconnected state
-  font = "Roboto Medium 13", -- Adjust the font size as needed
+        id = "icon",
+        text = "󰤨", -- Default icon for disconnected state
+        font = "Roboto Medium 13", -- Adjust the font size as needed
         widget = wibox.widget.textbox,
     },
     layout = wibox.layout.fixed.horizontal,
@@ -26,9 +27,9 @@ local network_speed_widget = wibox.widget {
 -- Create a tooltip for the network speed widget
 local network_tooltip = awful.tooltip {
     objects = { network_speed_widget },
-    fg = "#ffffff",
-    bg = "#0000000",
-    font = "Roboto Medium 10"
+    fg = beautiful.fg,
+    bg = beautiful.transparent,
+    font = beautiful.font .. "10"
 
 }
 
@@ -41,7 +42,9 @@ local function update_network_speed()
      local is_connected = stdout ~= ""
      if not is_connected then
       -- Disconnected state
-      network_speed_widget:get_children_by_id("icon")[1].text = "󰤭" -- Use a different icon for disconnected state
+      disconnect_icon = "󰤭"
+      disconnected_color = beautiful.fg_urgent
+      network_speed_widget:get_children_by_id("icon")[1].markup = '<span color = "' ..disconnected_color.. '" >' .. disconnect_icon .. '</span>' -- Use a different icon for disconnected state
       network_tooltip.text = "Disconnected"
      else
       -- Connected state, get signal strength using nmcli
@@ -49,17 +52,18 @@ local function update_network_speed()
        "nmcli -t -f IN-USE,SIGNAL dev wifi | grep '^*' | cut -d ':' -f 2",
        function(stdout)
         local signal_strength = tonumber(stdout)
+        local color = beautiful.fg_focus
         if signal_strength > 80 then  -- Strong signal
-         network_speed_widget:get_children_by_id("icon")[1].text = "󰤨"
+         network_speed_widget:get_children_by_id("icon")[1].markup = '<span color = "' ..color.. '" >' .."󰤨".. '</span>' 
         elseif signal_strength > 70 then  -- Medium signal
-         network_speed_widget:get_children_by_id("icon")[1].text = "󰤥"
+         network_speed_widget:get_children_by_id("icon")[1].markup = '<span color = "' ..color.. '" >' .."󰤥".. '</span>' 
         elseif signal_strength > 50 then
-          network_speed_widget:get_children_by_id("icon")[1].text = "󰤢"
+          network_speed_widget:get_children_by_id("icon")[1].markup = '<span color = "' ..color.. '" >' .."󰤢".. '</span>'
         elseif signal_strength > 30 then
-          network_speed_widget:get_children_by_id("icon")[1].text = "󰤟"
+          network_speed_widget:get_children_by_id("icon")[1].markup = '<span color = "' ..color.. '" >' .."󰤟".. '</span>'
         else
          -- Weak signal
-         network_speed_widget:get_children_by_id("icon")[1].text = "󰤯"
+         network_speed_widget:get_children_by_id("icon")[1].markup = '<span color = "' ..color.. '" >' .."󰤯".. '</span>'
         end
       end
      )

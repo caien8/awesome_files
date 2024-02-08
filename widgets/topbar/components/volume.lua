@@ -2,6 +2,10 @@
 local wibox = require("wibox")
 local awful = require("awful")
 local gears = require("gears")
+local beautiful = require("themes.theme")
+
+local icon_color = beautiful.fg_focus
+local percentage_color = beautiful.fg_focus
 
 -- Create the volume widget
 local volume_widget = wibox.widget {
@@ -9,13 +13,13 @@ local volume_widget = wibox.widget {
         id = "icon",
         widget = wibox.widget.textbox,
         align = "center",
-        font = "Roboto Medium 14",
+        font = beautiful.font .. "14",
     },
     {
         id = "text",
         widget = wibox.widget.textbox,
         align = "center",
-        font = "Roboto Medium 10",
+        font = beautiful.font .. "10",
     },
     layout = wibox.layout.fixed.horizontal,
 }
@@ -40,9 +44,9 @@ local function update_volume_widget(widget)
             else
                 icon = "󰕾"  -- Icon for high volume
             end
-
-            widget.icon.text = icon
-            widget.text.text = " " .. volume .. "%"
+            
+            widget.icon.markup = '<span color = "' ..icon_color.. '">' .. icon .. '</span>'
+            widget.text.markup = '<span color = "' ..percentage_color.. '"> ' .. volume .. '%</span>'
         else
             widget.icon.text = "󰕿"  -- Default icon when volume is not available
             widget.text.text = " N/A"

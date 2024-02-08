@@ -1,6 +1,7 @@
 local gears = require("gears")
 local awful = require("awful")
 local wibox = require("wibox")
+local beautiful = require("themes.theme")
 
 -- Create the microphone widget
 local microphone_widget = wibox.widget {
@@ -8,7 +9,7 @@ local microphone_widget = wibox.widget {
         id = "mic_icon",
         widget = wibox.widget.textbox,
         align = "center",
-        font = "Roboto Medium 12",
+        font = beautiful.font .. "12",
     },
     layout = wibox.layout.fixed.horizontal,
 }
@@ -20,12 +21,14 @@ local function update_microphone_widget(widget, stdout)
     -- Update the mic icon based on mute state
     local mic_icon = ""
     if mic_mute == "yes" then
-        mic_icon = ""  -- FontAwesome icon for muted microphone
+        mic_icon = ""  -- icon for muted microphone
+        color = beautiful.fg
     else
-        mic_icon = ""  -- FontAwesome icon for unmuted microphone
+        mic_icon = ""  -- icon for unmuted microphone
+        color = beautiful.green_light
     end
 
-    widget.mic_icon.text = mic_icon
+    widget.mic_icon.markup = '<span color="' ..color.. '">' .. mic_icon .. '</span>'
 end
 
 -- Function to check the microphone status

@@ -19,7 +19,7 @@ local network_speed_widget = wibox.widget {
     -- Add a mouse click event to launch networkmanager_dmenu
     buttons = gears.table.join(
         awful.button({}, 1, function() -- 1 represents the left mouse button
-     awful.spawn("networkmanager_dmenu")
+     awful.spawn("networkmanager_dmenu -l 10")
         end)
     )
 }

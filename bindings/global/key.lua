@@ -37,7 +37,7 @@ awful.keyboard.append_global_keybindings{
         key = 'd',
         description = 'run dmenu',
         group = 'Launcher',
-        on_press = function() awful.util.spawn('dmenu_run -l 10') end,
+        on_press = function() awful.util.spawn('dmenu_run -c -l 10') end,
     },
     awful.key{  --* BRAVE
         modifiers = {mod.super},

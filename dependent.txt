@@ -1,0 +1,23 @@
+neovim
+git
+kitty
+brave
+codium
+thunar
+brightnessctl
+dmenu
+networkmanager-dmenu-git
+pavucontrol
+amixer
+udisks2
+udiskie
+xarchiver
+feh
+upower
+upowerglib
+acpi
+
+
+cd .config/dmenu
+make install
+patch -p1 < "patch.diff"
